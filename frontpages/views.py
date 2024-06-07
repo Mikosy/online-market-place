@@ -67,5 +67,3 @@ def item_detail(request, item_pk):
     }
 
     return render(request, 'frontpages/item-detail.html', args)
-
-

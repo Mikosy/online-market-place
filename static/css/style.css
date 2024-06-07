@@ -150,7 +150,18 @@ body {
 .nav-logo svg {
     color: rgb(3, 166, 3);
 }
-
+.navba .user_profile{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    height:30px;
+    background:transparent;
+    width:30px;
+    border-radius:50%;
+}
+.navba .user_profile svg{
+    color:#fff;
+}
 .navba-list {
     display: flex;
     font-size: var(--h4-font);
@@ -833,7 +844,24 @@ main button {
     object-fit:cover;
 }
 
-
+.conversations .conversation-inbox{
+    height:80px;
+    width:75%;
+    display:flex;
+    flex-direction:row;
+    align-items:center;
+    padding-left:10px;
+    margin:10px 0;
+}
+.conversations .conversation-inbox img{
+    height:50px;
+    background:black;
+    width:50px;
+    object-fit:cover;
+}
+.conversations .order-details{
+    padding-left:20px;
+}
 
 
 

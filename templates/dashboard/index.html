@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<section class="container">
+    {% if user.is_customer %}
+    {% else %}
+    <div class="text-light my-3">
+        <a href="{% url 'item:add-items' %}" class="btn btn-md bg-success text-light">+</a>
+    </div>
+    {% endif %}
+    <div class="row">
+        <div class="aside col-xl-3 col-md-3">
+            <h3 class="mt-4">{% if request.user.is_customer %}My Orders {% else %} My Items {% endif %}</h3>
+            <!-- <hr> -->
+
+            <div class="rounded-2 table-details">
+                <table class="table">
+                    <thead>
+                        <th>categories</th>
+                    </thead>
+                    <tbody>
+                        {% for category in categories %}
+                        <tr>
+                            <td>
+                                <a href="?categoty={{category.name}}">{{category.name}} {{category.items.count}}</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+        <div class="row my-4 col-xl-9 col-md-9 col-sm-12">
+            <!-- <h4>{{request.user.username|upper}}'s Item in Stock</h4> -->
+
+            {% for item in items %}
+            <div class="col-xl-3 col-md-4 col-sm-12 my-3 product-cards">
+                <div class="card my-3">
+                    <div class="card-image">
+                        <img src="{{item.image.url}}" class="card-img-top" alt="Item image">
+                    </div>
+                    <div class="card-text">
+                        <a href="{% url 'item-detail' item.id %}">{{item.name}}</h4></a>
+                        <p>{{item.price}}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+</section>
+
+
+
+
+
+{% endblock %}

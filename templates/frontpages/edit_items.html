@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+
+{% block content %}
+
+<section class="login py-5 border-top-1">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10 col-md-8 align-item-center">
+                <div class="border border px-5" style="border-radius: 5px;">
+                    <h3 class="bg-gray pt-5">Add Item</h3>
+
+                    <!-- using widget to customize form -->
+                    <form class="row g-3 mt-3 mb-5" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <!-- {% render_field form.seller|append_attr:"hidden:hidden" %}-->
+                        <label>Item Name</label>
+                        {% render_field form.name|append_attr:"value:{{item.name}}" placeholder="your name" class="form-control p-3" %}
+                        <label>Item Description</label>
+                        {% render_field form.description placeholder="description of item" class="form-control p-3" %}
+                        <label>Item Price</label>
+                        {% render_field form.price placeholder="price" class="form-control p-3" %}
+                        <label>Item Category</label>
+                        {% if categories %}
+                        {% render_field form.category class="form-control p-3" %}
+                        {% else %}
+                        {% render_field form.category class="form-control p-3" type="text" %}
+                        {% endif %}
+                        <label>Item Quantity</label>
+                        {% render_field form.quantity type="number" placeholder="quantity" class="form-control p-3" %}
+                        <label>Item Image</label>
+                        {% render_field form.image type="file" class="form-control p-3" %}
+                        <label>Item Expiration Date</label>
+                        {% render_field form.expiration_date type="date" class="form-control p-3" %}
+<!--                        <label>Is Avaialable</label>-->
+<!--                        {% render_field form.available type="checkbox" class="text-end" %}-->
+
+                        <div class="col-3">
+                            <label class="d-flex align-items-center gap-1">
+                                <input type="checkbox" name="available">
+                                Is Avaialable
+                            </label>
+                        </div>
+
+
+                        <button class="btn btn-lg btn-success" type="submit">Update Item</button>
+                    </form>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+{% endblock %}
+
+{% block footer %}
+{% endblock %}

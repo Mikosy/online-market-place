@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+
+<main class="container">
+    <div class="header-one">
+        <div class="shop-now text-center">
+            <h2 class="fw-bold">
+                Shopify <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor" class="bi bi-cart-fill"
+                viewBox="0 0 16 16">
+                <path
+                    d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
+            </svg>
+            </h2>
+            <p>Your online marketplace.</p>
+        </div>
+        <div class="banner-search">
+            <form action="" method="GET">
+                <input type="search" name="q" {% if query %} value="{{query}}" {% else %} value=""{% endif %} placeholder="Search items...">
+                <button type="submit">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-search" viewBox="0 0 16 16">
+                        <path
+                            d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                    </svg>
+                </button>
+
+            </form>
+
+        </div>
+    </div>
+
+</main>
+
+<section class="container">
+    {% if user.is_customer %}
+    {% else %}
+    <div class="text-light my-3">
+        <a href="{% url 'item:add-items' %}" class="btn btn-md bg-success text-light">+</a>
+    </div>
+    {% endif %}
+    <div class="row">
+        <div class="aside col-xl-3 col-md-3">
+            <h3 class="mt-4">Categories</h3>
+            <!-- <hr> -->
+
+            <div class="rounded-2 table-details">
+                <table class="table">
+                    <thead>
+                        <th></th>
+                    </thead>
+                    <tbody>
+                        {% for category in categories %}
+                        <tr>
+                            <td>
+
+                                <a href="{% url 'index' %}?category={{category.id}}" class="{% if categroy.id == category_id %} bg-success text-light {% endif %}">{{category.name}} {{category.items.count}}</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div>
+                <a href="{% url 'index' %}" class="btn btn-md bg-warning px-3 py-2 my-3 text-light">Clear Filters</a>
+            </div>
+        </div>
+
+
+
+        <div class="row my-4 col-xl-9 col-md-9 col-sm-12">
+            <!-- <h4>{{request.user.username|upper}}'s Item in Stock</h4> -->
+            {%if query %}
+            <h3>Items under searched word <span class="text-danger">{{query}}<span></h3>
+            {% for obj in object_list %}
+            <div class="col-xl-3 col-md-4 col-sm-12 my-3 product-cards">
+                <div class="card my-3">
+                    <div class="card-image">
+                        <img src="{{obj.image.url}}" class="card-img-top" alt="Item image">
+                    </div>
+                    <div class="card-text">
+                        <a href="?item={{obj.name}}">{{obj.name}}</h4></a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            {% for item in page_obj %}
+            <div class="col-xl-3 col-md-4 col-sm-12 my-3 product-cards">
+                <div class="card my-3">
+                    <div class="card-image">
+                        <img src="{{item.image.url}}" class="card-img-top" alt="Item image">
+                    </div>
+                    <div class="card-text">
+                        <a href="{% url 'item-detail' item.id %}">{{item.name}}</h4></a>
+                        <p>{{item.price}}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+
+</section>
+
+<!-- Paginator -->
+<section class="section-pagination container">
+    {% if page_obj.has_previous %} {# whether the previous page exists #}
+    <button>
+        <a href="?page={{page_obj.previous_page_number}}">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left"
+            viewBox="0 0 16 16">
+            <path fill-rule="evenodd"
+                d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z" />
+        </svg>
+        </a>
+    </button>
+    {% endif %}
+    <button class="active text-light">{{page_obj.number}}</button>
+    {%if page_obj.has_next %} {# whether the next page exists #}
+    <button >
+        <a href="?page={{page_obj.next_page_number}}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right"
+            viewBox="0 0 16 16">
+            <path fill-rule="evenodd"
+                d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z" />
+        </svg>
+        </a> {# link to the next page #}
+    </button>
+    {% endif %}
+</section>
+
+
+
+
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block content %}
+<section class="container">
+    <h3> Start a conversation </h3>
+
+    <form method="POST" class="my-3">
+        {% csrf_token %}
+         <label class="my-2">Content</label>
+        {% render_field form.content placeholder="your message..." class="form-control p-3" %}
+
+        <button type="submit" class="btn btn-lg text-light bg-success my-3 px-4">Send</button>
+    </form>
+
+</section>
+{% endblock %}

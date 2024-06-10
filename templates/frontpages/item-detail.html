@@ -2,8 +2,11 @@
 {% load static %}
 
 {% block content %}
-
+<div>
 <section class="container detail_page">
+    <div class="pb-3">
+            <a href="/">Back</a>
+    </div>
     <div class="row main_detail_body">
         <div class="col-xl-6 col-md-6 col-sm-12 rounded image-section">
             <img src="{{detail.image.url}}">
@@ -26,29 +29,30 @@
                 {% endif %}
             </div>
         </div>
-
     </div>
 </section>
+</div>
 
-<section class="related_items container">
-    <div class="row mt-3">
-    <h3>Related Items</h3>
-    {% for item in related_items %}
-            <div class="col-xl-3 col-md-4 col-sm-12 my-3 product-cards">
-                <div class="card my-3">
-                    <div class="card-image">
-                        <img src="{{item.image.url}}" class="card-img-top" alt="Item image">
-                    </div>
-                    <div class="card-text">
-                        <a href="{% url 'item-detail' item.id %}">{{item.name}}</h4></a>
-                        <p>{{item.price}}</p>
+<div>
+    <section class="container related_items container" id="related_items">
+        <div class="row mt-3">
+        <h3>Related Items</h3>
+        {% for item in related_items %}
+                <div class="col-xl-3 col-md-4 col-sm-12 my-3 product-cards">
+                    <div class="card my-3">
+                        <div class="card-image">
+                            <img src="{{item.image.url}}" class="card-img-top" alt="Item image">
+                        </div>
+                        <div class="card-text">
+                            <a href="{% url 'item-detail' item.id %}">{{item.name}}</h4></a>
+                            <p>{{item.price}}</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-    {% endfor %}
-    </div>
-</section>
-
+        {% endfor %}
+        </div>
+    </section>
+</div>
 
 
 {% endblock %}

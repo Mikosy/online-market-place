@@ -57,7 +57,8 @@ def inbox(request):
     return render(request, 'conversation/inbox.html', data)
 
 def converstaion_details(request, pk):
-    detail = Conversation.objects.filter(members__in=[request.user.id]).get(pk=pk)
+    # detail = Conversation.objects.filter(members__in=[request.user.id]).get(pk=pk)
+    detail = get_object_or_404(Conversation, pk=pk, members__in=[request.user.id])
 
     if request.method == 'POST':
         form = ConversationMessageForm(request.POST)
@@ -72,7 +73,7 @@ def converstaion_details(request, pk):
     else:
         form = ConversationMessageForm()
 
-    return render(request, 'conversation/detail.html', {'detail':detail, 'form':form })
+    return render(request, 'conversation/detail.html', {'detail':detail, 'form':form, 'item': detail.item })
 
 
 # def navbar(request):

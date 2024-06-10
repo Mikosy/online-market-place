@@ -4,44 +4,75 @@
 
 {% block content %}
 <section class="container">
-    <h3> Conversations </h3>
+    <div class="pb-3">
+            <a href="{% url 'conversation:inbox' %}">Back</a>
+    </div>
+
+    <h3> Conversation with
+        {% if detail.item.seller == request.user %}
+        {% for member in detail.members.all %}
+            {% if member != request.user %}
+                {{ member.username }}
+            {% endif %}
+        {% endfor %}
+        {% else %}
+            {{ detail.item.seller.username }}
+        {% endif %}
+    </h3>
 
     <div class="row">
-    <div class=" col-xl-9 col-md-9 col-sm-12 my-3">
-        {% for message in detail.messages.all %}
-            <div class="card conversation-inbox my-2 p-3 {% if message.created_by == request.user %} bg-info {% else %} bg-secondary text-light{% endif %}">
-                <div class="col-md-9 order-details">
-                        <div>
-                            <div>
-                                <div>
-                                    <span>{{message.created_by.username }} @ {{message.created_at }}</span>
-                                <div>
-                                    <span>{{message.content}}</span>
-                                </div>
-                            </div>
-                            <div>
-
-                            </div>
-                        </div>
+        <div class="col-xl-8 col-md-8 col-sm-12">
+            {% for message in detail.messages.all %}
+            {% if message.created_by == request.user %}
+                <div class="section-for-chat my-2 p-3 text-start">
+                    <div class="chat-box">
+                        <p>{{message.created_by.username }}</p>
+                        <span>{{message.content}}</span>
+                        <span>[{{message.created_at | time:'g:i A'  }} on the {{message.created_at | date:"d-m-Y"  }}]</span>
+                        <div id="curve"></div>
+                    </div>
                 </div>
-            </div>
-        {% endfor %}
-    </div>
+            {% else %}
+                <div class="section-for-chat my-2 p-3 text-end">
+                    <div class="chat-box-for bg-info">
+                        <p>{{message.created_by.username }}</p>
+                        <span class="my-2">{{message.content}}</span>
+                        <span>[{{message.created_at | time:'g:i A'  }} on the {{message.created_at | date:"d-m-Y"  }}]</span>
+                        <div id="curve2"></div>
+                    </div>
+                </div>
+            {% endif %}
+            {% endfor %}
+
+<!--            <div class="for-form-submission">-->
+<!--                <form method="POST" class="my-3">-->
+<!--                    {% csrf_token %}-->
+<!--                     <label class="my-2">Send a message</label>-->
+<!--                    {% render_field form.content|append_attr:"resize:none" placeholder="your message..." class="form-control p-3" %}-->
+
+<!--                    <button type="submit" class="btn btn-lg text-light bg-success my-3 px-4">-->
+<!--                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send" viewBox="0 0 16 16">-->
+<!--                          <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z"/>-->
+<!--                        </svg>-->
+<!--                    </button>-->
+<!--                </form>-->
+<!--            </div>-->
+        </div>
 
 
-    <div class="col-xl-9 col-md-9 col-sm-12">
-    <form method="POST" class="my-3">
-        {% csrf_token %}
-         <label class="my-2">Content</label>
-        {% render_field form.content placeholder="your message..." class="form-control p-3" %}
+        <div class="col-xl-4">
+        <form method="POST" class="my-3">
+            {% csrf_token %}
+             <label class="my-2">Send a message</label>
+            {% render_field form.content placeholder="your message..." class="form-control p-3" %}
 
-        <button type="submit" class="btn btn-lg text-light bg-success my-3 px-4">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send" viewBox="0 0 16 16">
-              <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z"/>
-            </svg>
-        </button>
-    </form>
-    </div>
+            <button type="submit" class="btn btn-lg text-light bg-success my-3 px-4">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send" viewBox="0 0 16 16">
+                  <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z"/>
+                </svg>
+            </button>
+        </form>
+        </div>
 
     </div>
 

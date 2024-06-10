@@ -12,22 +12,53 @@
     {% endif %}
     <div class="row">
         <div class="aside col-xl-3 col-md-3">
-            <h3 class="mt-4">{% if request.user.is_customer %}My Orders {% else %} My Items {% endif %}</h3>
             <!-- <hr> -->
 
-            <div class="rounded-2 table-details">
+            <div class="rounded-2 table-details mt-5">
                 <table class="table">
                     <thead>
-                        <th>categories</th>
+                        <th>{% if request.user.is_customer %}My Orders {% else %} My Items {% endif %}</th>
                     </thead>
                     <tbody>
-                        {% for category in categories %}
+                    <tr>
+                          <form action="" method="GET">
+                              <div class="d-flex align-items-center">
+                                  <div class="">
+                                    <input type="search" class="form-control" name="q" {% if query %} value="{{query}}" {% else %} value=""{% endif %} placeholder="Search items...">
+                                  </div>
+                                  <div class="">
+                                    <button type="submit" class="btn btn-md bg-warning">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                    class="bi bi-search" viewBox="0 0 16 16">
+                                    <path
+                                        d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                                    </svg>
+                                    </button>
+                                  </div>
+                              </div>
+
+
+                        </form>
+                    </tr>
+                    <br>
+                    {% if request.user.is_customer %}
+                        {% for conversation in conversations %}
                         <tr>
                             <td>
-                                <a href="?categoty={{category.name}}">{{category.name}} {{category.items.count}}</a>
+                                <a href="{% url 'item-detail' conversation.item.id %}">{{conversation.item.name}}</h4></a>
                             </td>
                         </tr>
                         {% endfor %}
+                    {% endif %}
+                    {% if request.user != is_customer %}
+                        {% for item in object_list %}
+                        <tr>
+                            <td>
+                                <a href="{% url 'item-detail' item.id %}">{{item.name}}</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    {% endif %}
                     </tbody>
                 </table>
             </div>
@@ -36,7 +67,7 @@
 
         <div class="row my-4 col-xl-9 col-md-9 col-sm-12">
             <!-- <h4>{{request.user.username|upper}}'s Item in Stock</h4> -->
-
+            {% if request.user != is_customer%}
             {% for item in items %}
             <div class="col-xl-3 col-md-4 col-sm-12 my-3 product-cards">
                 <div class="card my-3">
@@ -44,12 +75,28 @@
                         <img src="{{item.image.url}}" class="card-img-top" alt="Item image">
                     </div>
                     <div class="card-text">
-                        <a href="{% url 'item-detail' item.id %}">{{item.name}}</h4></a>
+                        <a href="{% url 'item-detail' item.id %}">{{item.name}}</a>
                         <p>{{item.price}}</p>
                     </div>
                 </div>
             </div>
             {% endfor %}
+            {% endif %}
+
+            {% if request.user.is_customer %}
+            {% for conversation in conversations %}
+            <div class="col-xl-3 col-md-4 col-sm-12 my-3 product-cards">
+                <div class="card my-3">
+                    <div class="card-image">
+                        <img src="{{conversation.item.image.url}}" class="card-img-top" alt="Item ordered image">
+                    </div>
+                    <div class="card-text">
+                        <a href="{% url 'item-detail' conversation.item.id %}">{{conversation.item.name}}</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            {% endif %}
         </div>
     </div>
 

@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+
+{% block content %}
+
+<section class="login py-5 border-top-1">
+    <div class="container">
+
+        <div class="row justify-content-center">
+            <div class="col-lg-10 col-md-8 align-item-center">
+            <div class="pb-3">
+            <a href="/">Back</a>
+            </div>
+                <div class="border border px-5" style="border-radius: 5px;">
+                    <div class="text-end my-3">
+                    {% if messages %}
+                        <ul>
+                            {% for message in messages %}
+                                <li class="alert {% if message.success %} alert-success {% else %} alert-danger {% endif %}" role="alert">{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                    </div>
+                    <h3 class="bg-gray pt-5">Upload item with file</h3>
+
+
+<!--                    <form class="row g-3 mt-3 mb-5" method="POST" enctype="multipart/form-data">-->
+<!--                        {% csrf_token %}-->
+<!--                        <div class="">-->
+<!--                            <label>Seller</label>-->
+<!--                            <input type="text" name="seller" class="form-control" value="{{request.user}}">-->
+<!--                        </div>-->
+<!--                        <div class="">-->
+<!--                            <label for="">Item Name</label>-->
+<!--                            <input type="text" name="name" class="form-control" required>-->
+<!--                        </div>-->
+<!--                        <div class="">-->
+<!--                            <label for="">Description</label>-->
+<!--                            <textarea name="description" class="form-control" rows="10" required></textarea>-->
+<!--                        </div>-->
+<!--                        <div class="">-->
+<!--                            <label for="">Price</label>-->
+<!--                            <input type="number" name="price" class="form-control" required>-->
+<!--                        </div>-->
+<!--                        <div class="">-->
+<!--                            <label>Category</label>-->
+<!--                            <select name="category" class="form-control" required>-->
+<!--                                {% if categories %}-->
+<!--                                <option value="......">.....</option>-->
+<!--                                {% for category in categories %}-->
+<!--                                <option value="{{category.name}}">{{category.name}}</option>-->
+<!--                                {% endfor %}-->
+<!--                                {% else %}-->
+<!--                                <input type="text" name="category" class="form-control" id="">-->
+<!--                                {% endif %}-->
+<!--                            </select>-->
+<!--                        </div>-->
+<!--                        <div class="">-->
+<!--                            <label for="">Item Quantity</label>-->
+<!--                            <input type="number" class="form-control" name="quantity" required>-->
+<!--                        </div>-->
+<!--                        <div class="">-->
+<!--                            <label for="">Item Image</label>-->
+<!--                            <input type="file" name="image" accept=".png, .jpg, .jpeg" class="form-control" required>-->
+<!--                        </div>-->
+<!--                        <div class="col-1">-->
+<!--                            <label for="">Available</label>-->
+<!--                            <input type="checkbox" name="available" required>-->
+<!--                        </div>-->
+
+
+<!--                        <div class="col-12">-->
+<!--                            <button class="btn btn-primary" type="submit">Add</button>-->
+<!--                        </div>-->
+<!--                    </form>-->
+<!--                    <form class="row g-3 mt-3 mb-5" method="POST" enctype="multipart/form-data">-->
+<!--                        {% csrf_token %}-->
+<!--                        {{form.as_p}}-->
+
+<!--                        <button type="submit">add</button>-->
+<!--                    </form>-->
+
+                    <!-- using widget to customize form -->
+                    <form class="row g-3 mt-3 mb-5" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <!-- {% render_field form.seller|append_attr:"hidden:hidden" %}-->
+<!--                        <label>Item Name</label>-->
+                        {% render_field form.file class="form-control p-3" %}
+
+<!--                            {{form.as_p}}-->
+                        <button class="btn btn-lg btn-secondary" type="submit">Upload</button>
+                    </form>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+{% endblock %}
+
+{% block footer %}
+{% endblock %}

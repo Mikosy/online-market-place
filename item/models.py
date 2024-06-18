@@ -19,13 +19,14 @@ class Category(models.Model):
 
 
 class Product(models.Model):
+    id = models.AutoField(primary_key=True)
     seller = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     description = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
-    image = models.ImageField(upload_to='product_images/')
+    image = models.ImageField(upload_to='product_images/', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     expiration_date = models.DateTimeField(null=True, blank=True)
 
@@ -41,6 +42,24 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        """
+        Override the default save method to handle existing file updates.
+
+        If the `image` field hasn't changed, keep the existing file.
+        Otherwise, delete the old file and save the new one.
+        """
+        if self.pk is not None and self.id:  # Check if it's an existing object
+            try:
+                existing_product = Product.objects.get(pk=self.pk)
+                if self.image != existing_product.image:
+                    # Delete the old file if it's different
+                    existing_product.image.delete()
+            except Product.DoesNotExist:
+                pass  # Ignore if the object doesn't exist
+
+        super().save(*args, **kwargs)
 
 
 class Order(models.Model):

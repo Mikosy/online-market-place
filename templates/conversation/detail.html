@@ -44,11 +44,11 @@
             {% endif %}
             {% endfor %}
 
-<!--            <div class="for-form-submission">-->
-<!--                <form method="POST" class="my-3">-->
+<!--            <div class="col-xl-4">-->
+<!--                <form method="POST" class="my-3" id="chat">-->
 <!--                    {% csrf_token %}-->
 <!--                     <label class="my-2">Send a message</label>-->
-<!--                    {% render_field form.content|append_attr:"resize:none" placeholder="your message..." class="form-control p-3" %}-->
+<!--                    {% render_field form.content placeholder="your message..." class="form-control p-3" id="content" %}-->
 
 <!--                    <button type="submit" class="btn btn-lg text-light bg-success my-3 px-4">-->
 <!--                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send" viewBox="0 0 16 16">-->
@@ -56,15 +56,15 @@
 <!--                        </svg>-->
 <!--                    </button>-->
 <!--                </form>-->
-<!--            </div>-->
-        </div>
+<!--                </div>-->
+            </div>
 
 
         <div class="col-xl-4">
-        <form method="POST" class="my-3">
+        <form method="POST" class="my-3" id="chat">
             {% csrf_token %}
              <label class="my-2">Send a message</label>
-            {% render_field form.content placeholder="your message..." class="form-control p-3" %}
+            {% render_field form.content placeholder="your message..." class="form-control p-3" id="content" %}
 
             <button type="submit" class="btn btn-lg text-light bg-success my-3 px-4">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send" viewBox="0 0 16 16">
@@ -77,5 +77,9 @@
     </div>
 
 
+
 </section>
+
+
+
 {% endblock %}

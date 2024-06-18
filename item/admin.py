@@ -6,7 +6,7 @@ from .models import *
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ['name', 'price', 'seller',
+    list_display = ['name', 'price', 'seller','category',
                     'available', 'created_at']
     list_filter = ['available', 'created_at']
     list_editable = ['price', 'available']

@@ -7,6 +7,10 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic import ListView
 
+from django.template.loader import render_to_string
+
+from django.http import JsonResponse
+
 from item.models import *
 
 from item.forms import *
@@ -34,6 +38,7 @@ def index(request):
         # if page is empty then return last page
         page_obj = p.page(p.num_pages)
 
+
     query = request.GET.get('q')
     if query:
         object_list = items.filter(name__icontains=query)
@@ -54,8 +59,11 @@ def index(request):
         'category_id': int(category_id)
     }
 
-    return render(request, 'frontpages/index.html', args)
+    # if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+    #     content_html = render_to_string('frontpages/index.html', args, request=request)
+    #     return JsonResponse({'content': content_html})
 
+    return render(request, 'frontpages/index.html', args)
 
 @login_required
 def item_detail(request, item_pk):
@@ -67,3 +75,4 @@ def item_detail(request, item_pk):
     }
 
     return render(request, 'frontpages/item-detail.html', args)
+

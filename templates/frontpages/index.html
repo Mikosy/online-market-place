@@ -17,7 +17,7 @@
             <p>Your online marketplace.</p>
         </div>
         <div class="banner-search">
-            <form action="" method="GET">
+            <form action="" method="GET" id="searching">
                 <input type="search" name="q" {% if query %} value="{{query}}" {% else %} value=""{% endif %} placeholder="Search items...">
                 <button type="submit">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -39,6 +39,7 @@
     {% else %}
     <div class="text-light my-3">
         <a href="{% url 'item:add-items' %}" class="btn btn-md bg-success text-light">+</a>
+        <a href="{% url 'item:upload_products' %}" class="btn btn-md bg-success text-light">upload items with file</a>
     </div>
     {% endif %}
     <div class="row">
@@ -56,7 +57,7 @@
                         <tr>
                             <td>
 
-                                <a href="{% url 'index' %}?category={{category.id}}" class="{% if categroy.id == category_id %} bg-success text-light {% endif %}">{{category.name}} {{category.items.count}}</a>
+                                <a href="{% url 'index' %}?category={{category.id}}" class="{% if categroy.id == category_id %} bg-success text-light {% endif %}">{{category.name}} {{category.item.count}}</a>
                             </td>
                         </tr>
                         {% endfor %}
@@ -71,6 +72,7 @@
 
         <div class="row col-xl-9 col-md-9 col-sm-12">
 <!--             <h4>{{request.user.username|upper}}'s Item in Stock</h4>-->
+
             {%if query %}
             <h3>Items under searched word <span class="text-danger">{{query}}<span></h3>
             {% for obj in object_list %}
@@ -86,8 +88,9 @@
             </div>
             {% endfor %}
             {% else %}
+<!--            {% include 'frontpages/partial_content.html' %}-->
             {% for item in page_obj %}
-            <div class="col-xl-3 col-md-4 col-sm-12 my-3 product-cards">
+            <div class="col-xl-3 col-md-4 col-sm-12 my-3 product-cards" id="content">
                 <div class="card my-3">
                     <div class="card-image">
                         <img src="{{item.image.url}}" class="card-img-top" alt="Item image">
@@ -99,6 +102,7 @@
                 </div>
             </div>
             {% endfor %}
+
             {% endif %}
         </div>
     </div>
@@ -106,31 +110,57 @@
 </section>
 
 <!-- Paginator -->
-<section class="section-pagination container">
-    {% if page_obj.has_previous %} {# whether the previous page exists #}
-    <button>
-        <a href="?page={{page_obj.previous_page_number}}">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left"
-            viewBox="0 0 16 16">
-            <path fill-rule="evenodd"
-                d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z" />
-        </svg>
-        </a>
-    </button>
-    {% endif %}
-    <button class="active text-light">{{page_obj.number}}</button>
-    {%if page_obj.has_next %} {# whether the next page exists #}
-    <button >
-        <a href="?page={{page_obj.next_page_number}}">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right"
-            viewBox="0 0 16 16">
-            <path fill-rule="evenodd"
-                d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z" />
-        </svg>
-        </a> {# link to the next page #}
-    </button>
-    {% endif %}
-</section>
+    <section class="section-pagination container" id="pagination">
+        {% if page_obj.has_previous %}
+        <button class="pagination-button">
+            <a href="?page={{page_obj.previous_page_number}}" >
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left"
+                viewBox="0 0 16 16">
+                <path fill-rule="evenodd"
+                    d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z" />
+            </svg>
+            </a>
+        </button>
+        {% endif %}
+        <button class="active text-light">{{page_obj.number}}</button>
+        {%if page_obj.has_next %} {# whether the next page exists #}
+        <button class="pagination-button" data-page="{{page_obj.next_page_number}}">
+            <a href="?page={{page_obj.next_page_number}}" >
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right"
+                viewBox="0 0 16 16">
+                <path fill-rule="evenodd"
+                    d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z" />
+            </svg>
+            </a> {# link to the next page #}
+        </button>
+        {% endif %}
+    </section>
+
+<!--<script>-->
+<!--$(document).on('submit', '#searching', function (e) {-->
+<!--    e.preventDefault();-->
+
+<!--    var form = $(this);-->
+<!--    var url = form.attr('action'); // Fetch the form's action attribute-->
+<!--    var serializedData = form.serialize(); // Serialize the form's data-->
+
+<!--    $.ajax({-->
+<!--        type: 'GET',-->
+<!--        url: {% url 'index' %},-->
+<!--        data: serializedData, // Send serialized data as query parameters-->
+<!--        success: function (response) {-->
+<!--            $('#results').html(response); // Update the results div with the response-->
+<!--        },-->
+<!--        error: function (xhr, status, error) {-->
+<!--            console.error("Error:", error);-->
+<!--            alert("An error occurred. Please try again.");-->
+<!--        }-->
+<!--    });-->
+<!--});-->
+
+
+<!--</script>-->
+
 
 
 

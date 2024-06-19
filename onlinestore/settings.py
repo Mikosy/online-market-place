@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
+import dj_database_url
 import os
 from pathlib import Path
 
@@ -108,6 +109,10 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+DATABASES['default'] = dj_database_url.parse("postgres://online_market_place_user:tHEVW3Lrp7AWl4Ba7ibBD2occcGCCvCz@dpg-cpod23aju9rs738mmd20-a.oregon-postgres.render.com/online_market_place")
+
+#
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators

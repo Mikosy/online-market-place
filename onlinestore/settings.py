@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-3j8v_l^k2ijlvfn*_nh^p15&fjd5dv^_z39^$o0vtzu=niub70
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['onlinestore-app.onrender.com', 'localhost:5500']
+ALLOWED_HOSTS = ["onlinestore-app.onrender.com", " "]
 
 AUTH_USER_MODEL = 'core.CustomUser'
 

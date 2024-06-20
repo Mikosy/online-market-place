@@ -1,7 +1,7 @@
 services:
   - type: web
     plan: free
-    name: onlinestore
+    name: onlinestore-app
     runtime: python
     buildCommand: "./build.sh"
     startCommand: "gunicorn onlinestore.wsgi:application"

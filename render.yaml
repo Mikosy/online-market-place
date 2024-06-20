@@ -1,17 +1,8 @@
 services:
   - type: web
+    plan: free
     name: onlinestore
-    env: python
-    buildCommand: "pip install --upgrade pip setuptools wheel && pip install -r requirements.txt"
-    buildCommand: "pip install -r requirements.txt && python manage.py collectstatic --noinput"
+    runtime: python
+    buildCommand: "./build.sh"
     startCommand: "gunicorn onlinestore.wsgi:application"
-    staticPublishPath: staticfiles
-
-
-services:
-  - type: web
-    name: my-django-app
-    env: python
-    buildCommand: "pip install --upgrade pip setuptools wheel && pip install -r requirements.txt"
-    startCommand: "gunicorn myproject.wsgi:application"
     staticPublishPath: staticfiles

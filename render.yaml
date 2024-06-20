@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: onlinestore
+    env: python
+    buildCommand: "pip install -r requirements.txt && python manage.py collectstatic --noinput"
+    startCommand: "gunicorn onlinestore.wsgi:application"
+    staticPublishPath: staticfiles

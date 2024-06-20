@@ -149,12 +149,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-# STATIC_URL = "static/"
-# # if DEBUG:
-# #     STATICFILES_DIRS = [BASE_DIR / "static"]
-# # else:
-# #     STATIC_ROOT = STATIC_ROOT = BASE_DIR / "static"
-
 STATIC_URL = '/static/'
 # This production code might break development mode, so we check whether we're in DEBUG mode
 if not DEBUG:
